@@ -3,9 +3,7 @@ package com.stylingandroid.numberdetector
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,12 +16,12 @@ class MainActivity : AppCompatActivity() {
         numberClassifier = NumberClassifier()
 
         finger_canvas.drawingListener = { bitmap ->
-            launch(CommonPool) {
+            GlobalScope.launch(Dispatchers.Default) {
                 val start = System.currentTimeMillis()
                 numberClassifier.classify(bitmap) { result, confidence, elapsed ->
                     val total = System.currentTimeMillis() - start
                     println("Result: $result, confidence: $confidence, elapsed: ${total}ms total, ${elapsed}ms in ML")
-                    launch(UI) {
+                    GlobalScope.launch(Dispatchers.Main) {
                         digit.text  = result.toString()
                     }
                 }
