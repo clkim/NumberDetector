@@ -34,9 +34,10 @@ class NumberClassifier(
                 .build()
         val start = System.currentTimeMillis()
         interpreter.run(inputs, options)
-                .addOnSuccessListener { outputs ->
-                    outputs.map().entries.maxBy { it.value }
-                            ?.also { success(it.key, it.value, System.currentTimeMillis() - start) }
+                .addOnSuccessListener { outputs -> outputs.map().entries.maxBy { it.value }
+                        ?.also { max ->
+                            success(max.key, max.value, System.currentTimeMillis() - start)
+                        }
                 }
                 .addOnFailureListener {
                     exception -> throw(exception)
@@ -55,9 +56,11 @@ class NumberClassifier(
     }
 
     private fun Int.convertToGreyScale(): Float =
-            1f - ((Color.red(this) + Color.green(this) + Color.blue(this)).toFloat() / 3f / 255f)
+            1f - ((Color.red(this) + Color.green(this) + Color.blue(this))
+                    .toFloat() / 3f / 255f)
 
     private fun FirebaseModelOutputs.map(): Map<Int, Float> {
-        return getOutput<Array<FloatArray>>(0)[0].mapIndexed { index, fl -> index to fl }.toMap()
+        return getOutput<Array<FloatArray>>(0)[0]
+                .mapIndexed { index, fl -> index to fl }.toMap()
     }
 }
