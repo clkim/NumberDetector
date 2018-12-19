@@ -27,7 +27,6 @@ class NumberClassifier(
 
     fun classify(
             bitmap: Bitmap,
-            failure: (Exception) -> Nothing = { exception -> throw(exception) },
             success: (Int, Float, Long) -> Unit
     ) {
         val inputs = FirebaseModelInputs.Builder()
@@ -36,12 +35,11 @@ class NumberClassifier(
         val start = System.currentTimeMillis()
         interpreter.run(inputs, options)
                 .addOnSuccessListener { outputs ->
-                    outputs.map().entries.maxBy { it.value }?.also {
-                        success(it.key, it.value, System.currentTimeMillis() - start)
-                    }
+                    outputs.map().entries.maxBy { it.value }
+                            ?.also { success(it.key, it.value, System.currentTimeMillis() - start) }
                 }
                 .addOnFailureListener {
-                    failure(it)
+                    exception -> throw(exception)
                 }
     }
 
