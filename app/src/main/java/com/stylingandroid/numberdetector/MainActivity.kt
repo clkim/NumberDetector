@@ -9,6 +9,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var numberClassifier: NumberClassifier
 
+    private val mainActivityJob = Job()
+    private val ioScope = CoroutineScope(Dispatchers.IO + mainActivityJob)
+    private val uiScope = CoroutineScope(Dispatchers.Main + mainActivityJob)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -16,12 +20,12 @@ class MainActivity : AppCompatActivity() {
         numberClassifier = NumberClassifier()
 
         finger_canvas.drawingListener = { bitmap ->
-            GlobalScope.launch(Dispatchers.Default) {
+            ioScope.launch {
                 val start = System.currentTimeMillis()
                 numberClassifier.classify(bitmap) { result, confidence, elapsed ->
                     val total = System.currentTimeMillis() - start
                     println("Result: $result, confidence: $confidence, elapsed: ${total}ms total, ${elapsed}ms in ML")
-                    GlobalScope.launch(Dispatchers.Main) {
+                    uiScope.launch {
                         digit.text  = result.toString()
                     }
                 }
@@ -32,5 +36,10 @@ class MainActivity : AppCompatActivity() {
             finger_canvas.clear()
             digit.text = ""
         }
+    }
+
+    override fun onDestroy() {
+        mainActivityJob.cancel()
+        super.onDestroy()
     }
 }
