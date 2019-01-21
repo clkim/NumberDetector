@@ -22,7 +22,7 @@ Here are steps to obtain your own google-services.json file, as well as to conne
 2. Last step: connect the app to Firebase by running the app from IDE
        > Run | Run app
 3. But Catch-22 is: what if app is not ready/debugged?
-A hack to try: use Firebase Assistant in Android Studio to pick any (benign) Firebase feature to connect the app
-   From Android Studio:
+A hack to try: use Firebase Assistant in Android Studio to pick any (benign) Firebase feature to connect the app.
+From Android Studio:
        > Tool | Firebase > e.g. Test Lab
        > Run (click on link) Firebase Test Lab from Android Studio > Connect app to Firebase

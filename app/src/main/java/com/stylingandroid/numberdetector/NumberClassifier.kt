@@ -35,8 +35,8 @@ class NumberClassifier(
         val start = System.currentTimeMillis()
         interpreter.run(inputs, options)
                 .addOnSuccessListener { outputs -> outputs.map().entries.maxBy { it.value }
-                        ?.also { max ->
-                            success(max.key, max.value, System.currentTimeMillis() - start)
+                        ?.also { maxEntry ->
+                            success(maxEntry.key, maxEntry.value, System.currentTimeMillis() - start)
                         }
                 }
                 .addOnFailureListener {
