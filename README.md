@@ -5,15 +5,18 @@ Using ML in an Android demo app - The Good, The Bad, and the Ugly
 
 ## MassTLC Machine Learning Developer Day, January 24, 2019
 
-The app demonstrates using the MNIST dataset to recognize hand-drawn digits on an Android.
+The app demonstrates using a TensorFlow Lite model trained on the MNIST dataset to recognize hand-drawn digits on an Android.
 
-We use ML Kit in Firebase (that stores the TensorFlow Lite model).
+We use ML Kit for Firebase to host the model.
+
+Credit and Acknowledgement: Mark Allison's blog posts and source code are the inspiration and source for this talk and demo app.
+https://blog.stylingandroid.com/ml-for-android-developers-part-1-2/
 
 <p align="center">
   <img src="DemoAppSreenshot.jpg" width="307" height="410" />
 </p>
 
-The google-services.json file obtained from my Firebase account is not checked in.
+NOTE: The google-services.json file obtained from my Firebase account is not checked in.
 Here are steps to obtain your own google-services.json file, as well as to connect the demo app to Firebase.
 1. Create a Firebase account: sign in at console.firebase.google.com
        > Add project e.g. NumberDetector
